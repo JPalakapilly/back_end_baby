@@ -1,6 +1,5 @@
 from flask import Flask, json, g, request
 from service import Service
-from flask_cors import CORS
 import interface as yelp
 from collections import OrderedDict
 import datetime
