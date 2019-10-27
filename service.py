@@ -168,4 +168,3 @@ class Service():
     def _addCached(self, sess, yelpID, name, rating, price, phone, city, image_url, photo1, photo2, photo3):
         sess.add(schema.CachedYelp(yelp_id=yelpID, name=name, rating=rating, price=price, phone=phone,
                                    city=city, image_url=image_url, photo1=photo1, photo2=photo2, photo3=photo3))
-

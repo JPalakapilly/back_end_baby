@@ -21,11 +21,42 @@ def restaurant_search():
     search_string = request.args["search_string"]
     location_string = request.args["location_string"]
     num_responses=10
+    restaurant_data_list = []
     if search_string == "":
-        yelp_responses = []
+        yelp_ids = []
     else:
-        yelp_responses =  yelp.search(search_string, location_string, num_responses, sort_by='rating')
-    return json_response({"restaurants": yelp_responses})
+        yelp_ids =  yelp.search(search_string, location_string, num_responses, sort_by='rating')
+
+    for yelp_id in yelp_ids:
+        cached_data = service.getCached(yelp_id)
+        if cached_data is not None:
+            data = cached_data
+        else:
+            data = yelp.restaurant_data_from_ID(yelp_id)
+            photos = data["photos"]
+            photo1 = ""
+            photo2 = ""
+            photo3 = ""
+            if len(photos) > 0:
+                photo1 = photos[0]
+            if len(photos) > 1:
+                photo2 = photos[1]
+            if len(photos) > 2:
+                photo2 = photos[2]
+
+            service.addCached(yelp_id,
+                              data["name"],
+                              data["rating"],
+                              data["price"],
+                              data["phone"],
+                              data["categories"],
+                              data["city"],
+                              data["image_url"],
+                              photo1,
+                              photo2,
+                              photo3)
+        restaurant_data_list.append(data)
+    return json_response({"restaurants": restaurant_data_list})
 
 
 @app.route("/login", methods=["POST"])
@@ -55,9 +86,9 @@ def create_event():
 @app.route("/vote_restaurant", methods=["POST"])
 def vote_restaurant():
     request_data = request.get_json()
-    userID = request_data["userID"]
-    YelpID = request_data["YelpID"]
     eventID = request_data["eventID"]
+    YelpID = request_data["YelpID"]
+    userID = request_data["userID"]
     service.voteRestaurant(userID, yelpID, eventID)
     return json_response({})
 
@@ -67,7 +98,34 @@ def get_restaurants():
     results = OrderedDict(service.getResults(eventID))
     restaurants = []
     for yelp_id in results:
-        restaurants.append(yelp.restaurant_data_from_ID(yelp_id))
+        cached_data = service.getCached(yelp_id)
+        if cached_data is not None:
+            data = cached_data
+        else:
+            data = yelp.restaurant_data_from_ID(yelp_id)
+            photos = data["photos"]
+            photo1 = ""
+            photo2 = ""
+            photo3 = ""
+            if len(photos) > 0:
+                photo1 = photos[0]
+            if len(photos) > 1:
+                photo2 = photos[1]
+            if len(photos) > 2:
+                photo2 = photos[2]
+
+            service.addCached(yelp_id,
+                              data["name"],
+                              data["rating"],
+                              data["price"],
+                              data["phone"],
+                              data["categories"],
+                              data["city"],
+                              data["image_url"],
+                              photo1,
+                              photo2,
+                              photo3)
+        restaurants.append(data)
     return json_response({"restaurants": restaurants})
 
 
@@ -91,6 +149,7 @@ def event_info():
     eventID = request.args["eventID"]
     name, time = service.eventInfo(eventID)
     return json_response({"eventName": name, "eventDateTime": time})
+
 
 
 def json_response(payload, status=200):
