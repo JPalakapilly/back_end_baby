@@ -94,22 +94,22 @@ class TimeVote(Base):
 class CachedYelp(Base):
     __tablename__ = 'cached_yelps'
     id = Column(Integer, primary_key=True)
-    yelp_id = Column(String)
-    name = Column(String)
+    yelp_id = Column(String(50))
+    name = Column(String(50))
     rating = Column(Float)
-    price = Column(String)
-    phone = Column(String)
-    city = Column(String)
-    image_url = Column(String)
-    photo1 = Column(String)
-    photo2 = Column(String)
-    photo3 = Column(String)
+    price = Column(String(50))
+    phone = Column(String(50))
+    city = Column(String(50))
+    image_url = Column(String(100))
+    photo1 = Column(String(100))
+    photo2 = Column(String(100))
+    photo3 = Column(String(100))
 
 class CachedCategory(Base):
     __tablename__ = 'cached_categories'
     id = Column(Integer, primary_key=True)
-    yelp_id = Column(String)
-    category = Column(String)
+    yelp_id = Column(String(50))
+    category = Column(String(50))
 
 
 # Create an engine to communicate with the database. The
