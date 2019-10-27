@@ -15,7 +15,10 @@ def restaurant_data_from_ID(yelp_ID):
     restaurant_data["yelpID"] = yelp_ID
     restaurant_data["name"] = yelp_response["name"]
     restaurant_data["rating"] = yelp_response["rating"]
-    restaurant_data["price"] = len(yelp_response["price"])
+    if "price" in yelp_response:
+        restaurant_data["price"] = len(yelp_response["price"])
+    else:
+        restaurant_data["price"] = 0
     restaurant_data["phone"] = yelp_response["phone"]
     restaurant_data["categories"] = list(map(lambda x: x["title"], yelp_response["categories"]))
     restaurant_data["city"] = yelp_response["location"]["city"]
