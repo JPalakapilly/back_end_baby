@@ -21,7 +21,7 @@ class Service():
         self.sess = self.sessMaker()
 
     def createEvent(self, eventName, eventDateTime, location):
-        UID = random.randint(0, 1000)
+        UID = random.randint(0, 10000000)
         run_transaction(self.sessMaker, lambda s: self._createEvent(s, UID, eventName, location))
         self.sess.commit()
         run_transaction(self.sessMaker, lambda s: self._addTimeOption(s, UID, eventDateTime))

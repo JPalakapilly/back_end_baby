@@ -21,7 +21,10 @@ def restaurant_search():
     search_string = request.args["search_string"]
     location_string = request.args["location_string"]
     num_responses=10
-    yelp_responses =  yelp.search(search_string, location_string, num_responses, sort_by='rating')
+    if search_string == "":
+        yelp_responses = []
+    else:
+        yelp_responses =  yelp.search(search_string, location_string, num_responses, sort_by='rating')
     return json_response({"restaurants": yelp_responses})
 
 
