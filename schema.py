@@ -94,7 +94,7 @@ class TimeVote(Base):
 class CachedYelp(Base):
     __tablename__ = 'cached_yelps'
     id = Column(Integer, primary_key=True)
-    yelp_id = Column(String, ForeignKey('restaurant_options.yelp_id'))
+    yelp_id = Column(String)
     name = Column(String)
     rating = Column(Float)
     price = Column(String)
@@ -108,7 +108,7 @@ class CachedYelp(Base):
 class CachedCategory(Base):
     __tablename__ = 'cached_categories'
     id = Column(Integer, primary_key=True)
-    yelp_id = Column(String, ForeignKey('restaurant_options.yelp_id'))
+    yelp_id = Column(String, ForeignKey('cached_yelps.yelp_id'))
     category = Column(String)
 
 

@@ -123,3 +123,49 @@ class Service():
             results.append(result)
         results.sort(key = lambda x: x[1])
         return results
+
+    def addCached(self, yelpID, name, rating, price, phone, categories, city, image_url, photo1, photo2, photo3):
+        run_transaction(self.sessMaker, lambda s: self._addCached(s, yelpID, name, rating, price, phone, city, image_url, photo1, photo2, photo3))
+        self.sess.commit()
+        for category in categories:
+            run_transaction(self.sessMaker, lambda s: self._addCategories(s, yelpID, category))
+            self.sess.commit()
+
+    def setCachedDict(self, result, categories):
+        ret = {}
+        parsedCategories = []
+
+        for category in categories:
+            parsedCategories.append(category[0])
+
+        ret["yelpID"] = result[0]
+        ret["name"] = result[1]
+        ret["rating"] = result[2]
+        ret["price"] = result[3]
+        ret["phone"] = result[4]
+        ret["city"] = result[5]
+        ret["image_url"] = result[6]
+        ret["photos"] = [result[7], result[8], result[9]]
+        ret["categories"] = parsedCategories
+
+        return ret
+
+    def getCached(self, yelpID):
+        result = self.sess.execute("SELECT yelp_id from cached_yelps where yelp_id=:yelpID", {"yelpID": yelpID}).fetchone()
+        if result is None:
+            return None
+        else:
+            result = self.sess.execute("SELECT yelpID, name, rating, price, phone, city, image_url, photo1, photo2, photo3 from cached_yelps where yelp_id=:yelpID",
+                                       {"yelpID": yelpID}).fetchone()
+            categories = self.sess.execute("SELECT category FROM cached_categories WHERE yelp_id=:yelpID", {"yelpID": yelpID}).fetchall()
+            ret = self.setCachedDict(result, categories)
+
+            return ret
+
+    def _addCategories(self, sess, yelpID, category):
+        sess.add(schema.CachedCategory(yelp_id = yelpID, category = category))
+
+    def _addCached(self, sess, yelpID, name, rating, price, phone, city, image_url, photo1, photo2, photo3):
+        sess.add(schema.CachedYelp(yelp_id=yelpID, name=name, rating=rating, price=price, phone=phone,
+                                   city=city, image_url=image_url, photo1=photo1, photo2=photo2, photo3=photo3))
+
