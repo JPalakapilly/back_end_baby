@@ -46,7 +46,8 @@ class Service():
         # This could be a result != null. Idk what result looks like
         if uid is None:
             #User doesn't exist, so we add the user to database
-            run_transaction(self.sessMaker, lambda s: self._login(s, username, eventID, creator))
+            uid = random.randint(0, 10000000)
+            run_transaction(self.sessMaker, lambda s: self._login(s, username, eventID, creator, uid))
             self.sess.commit()
             uid = self.sess.execute("SELECT id FROM users WHERE username=:name AND event_id=:eventID",
                               {"name": username, "eventID": eventID}).fetchone()
@@ -54,8 +55,8 @@ class Service():
         return uid[0]
 
 
-    def _login(self, sess, username, eventID, creator):
-        sess.add(schema.User(username=username, event_id=eventID, creator=creator))
+    def _login(self, sess, username, eventID, creator, uid):
+        sess.add(schema.User(id=uid, username=username, event_id=eventID, creator=creator))
 
     def addRestaurant(self, eventID, yelpID):
         exists = self.sess.execute("SELECT yelp_id FROM restaurant_options WHERE yelp_id=:yelpID and event_id=:eventID",
