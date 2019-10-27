@@ -155,7 +155,7 @@ class Service():
         if result is None:
             return None
         else:
-            result = self.sess.execute("SELECT yelpID, name, rating, price, phone, city, image_url, photo1, photo2, photo3 from cached_yelps where yelp_id=:yelpID",
+            result = self.sess.execute("SELECT yelp_id, name, rating, price, phone, city, image_url, photo1, photo2, photo3 from cached_yelps where yelp_id=:yelpID",
                                        {"yelpID": yelpID}).fetchone()
             categories = self.sess.execute("SELECT category FROM cached_categories WHERE yelp_id=:yelpID", {"yelpID": yelpID}).fetchall()
             ret = self.setCachedDict(result, categories)
