@@ -10,6 +10,10 @@ CORS(app)
 
 service = Service()
 
+@app.route("/")
+def index():
+    return "<h1>Welcome to our server !!</h1>"
+
 @app.route("/search_restaurant", methods=["GET"])
 def restaurant_search():
     search_string = request.args["search_string"]

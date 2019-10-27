@@ -13,7 +13,7 @@ class Service():
 
     def __init__(self):
         self.engine = create_engine(
-                                    'postgres://super:super@gcp-us-west2.what2eat.crdb.io:26257/defaultdb?sslmode=verify-full&sslrootcert=./what2eat-ca.crt',
+                                    'cockroachdb://super:super@gcp-us-west2.what2eat.crdb.io:26257/defaultdb?sslmode=verify-full&sslrootcert=./what2eat-ca.crt',
                                     connect_args={'sslmode': 'disable'},
                                     echo=True                   # Log SQL queries to stdout
                                 )
