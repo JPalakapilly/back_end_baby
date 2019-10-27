@@ -107,10 +107,13 @@ class Service():
         return result[0], int(self.datetimeToMs(result[1]))
 
     def getVotedRestaurants(self, userID, eventID):
-        result = self.sess.execute("SELECT ro.yelp_id from restaurant_options as ro, restaurant_votes as rv"
-                                   " WHERE rv.user_id=:userID and ro.id=rv.option_id and ro.event_id=:eventID",
+        results = self.sess.execute("SELECT ro.yelp_id from restaurant_options as ro, restaurant_votes as rv"
+                                   " WHERE rv.user_id=:userID and ro.id=rv.option_id",
                                    {"userID": userID, "eventID": eventID}).fetchall()
-        return result
+        ret = []
+        for result in results:
+            ret.append(result[0])
+        return ret
 
     def getResults(self, eventID):
         ids = self.sess.execute("SELECT id, yelp_id from restaurant_options where event_id=:eventID", {"eventID": eventID}).fetchall()
