@@ -1,12 +1,12 @@
 from flask import Flask, json, g, request
-from app.event.service import Service
+from service import Service
 from flask_cors import CORS
-import app.yelp.interface as yelp
+import interface as yelp
 from collections import OrderedDict
 import datetime
 
 app = Flask(__name__)
-CORS(app)
+# CORS(app)
 
 service = Service()
 
@@ -90,3 +90,5 @@ def event_info():
 
 def json_response(payload, status=200):
  return (json.dumps(payload), status, {'content-type': 'application/json'})
+
+app.run(threaded=True, port=5000)

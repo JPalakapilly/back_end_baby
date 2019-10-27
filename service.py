@@ -1,9 +1,8 @@
 from sqlalchemy.orm import sessionmaker
 from cockroachdb.sqlalchemy import run_transaction
 import random
-from . import schema
 import time
-# import schema
+import schema
 from sqlalchemy import create_engine
 import datetime
 
@@ -14,7 +13,6 @@ class Service():
     def __init__(self):
         self.engine = create_engine(
                                     'cockroachdb://super:super@gcp-us-west2.what2eat.crdb.io:26257/defaultdb?sslmode=verify-full&sslrootcert=./what2eat-ca.crt',
-                                    connect_args={'sslmode': 'disable'},
                                     echo=True                   # Log SQL queries to stdout
                                 )
 
@@ -125,34 +123,3 @@ class Service():
             results.append(result)
         results.sort(key = lambda x: x[1])
         return results
-
-serviceObj = Service()
-
-# print("Creating CalHacks7: ")
-# eventID = serviceObj.createEvent("CalHacks7", datetime.datetime.now(), "Berkeley")
-# print("EventID: ", eventID)
-# print("Adding User1: ")
-# UID1 = serviceObj.login("User1", eventID, True)
-# print("UID of user1: ", UID1)
-# UID2 = serviceObj.login("User2", eventID, False)
-# print("UID of user2: ", UID2)
-# UID3 = serviceObj.login("User3", eventID, False)
-# print("UID of user3: ", UID3)
-# serviceObj.addRestaurant(eventID, "Chum Bucket")
-# serviceObj.addRestaurant(eventID, "Krusty Krab")
-# serviceObj.addRestaurant(eventID, "Krusty Krab")
-# serviceObj.addRestaurant(eventID, "Gusteau's")
-# serviceObj.voteRestaurant(UID1, "Chum Bucket", eventID)
-# serviceObj.voteRestaurant(UID2, "Chum Bucket", eventID)
-# serviceObj.voteRestaurant(UID3, "Krusty Krab", eventID)
-# results = serviceObj.getResults(eventID)
-# print("Results: ", results)
-# print("getResults works: ", results == [("Gusteau's", 0),("Krusty Krab", 1), ("Chum Bucket", 2)])
-# print("Should be Chum Bucket", serviceObj.getVotedRestaurants(UID1, eventID))
-# serviceObj.voteRestaurant(UID1, "Gusteau's", eventID)
-# serviceObj.voteRestaurant(UID1, "Gusteau's", eventID)
-# serviceObj.voteRestaurant(UID1, "Gusteau's", eventID)
-# serviceObj.voteRestaurant(UID1, "Gusteau's", eventID)
-# serviceObj.voteRestaurant(UID1, "Gusteau's", eventID)
-# serviceObj.voteRestaurant(UID1, "Gusteau's", eventID)
-# print("all 1 vote", serviceObj.getResults(eventID))
