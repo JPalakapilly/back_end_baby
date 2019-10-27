@@ -10,7 +10,7 @@ import os
 app = Flask(__name__)
 CORS(app)
 
-
+service = Service()
 
 @app.route("/")
 def index():
@@ -153,9 +153,8 @@ def event_info():
 
 
 def json_response(payload, status=200):
- return (json.dumps(payload), status, {'content-type': 'application/json'})
+    return (json.dumps(payload), status, {'content-type': 'application/json'})
 
 if __name__ == "__main__":
-    service = Service()
     port = int(os.environ.get('PORT', 5002))
     app.run(threaded=False, port=port)
