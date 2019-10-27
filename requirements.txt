@@ -9,3 +9,4 @@ six==1.11.0
 SQLAlchemy==1.1.0
 Werkzeug==0.15.6
 yelpapi==2.4.0
+gunicorn==19.9.0
