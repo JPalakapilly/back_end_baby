@@ -25,7 +25,7 @@ def restaurant_search():
     if search_string == "":
         yelp_ids = []
     else:
-        yelp_ids =  yelp.search(search_string, location_string, num_responses, sort_by='rating')
+        yelp_ids = yelp.search(search_string, location_string, num_responses, sort_by='rating')
 
     for yelp_id in yelp_ids:
         cached_data = service.getCached(yelp_id)
@@ -56,6 +56,7 @@ def restaurant_search():
                               photo1,
                               photo2,
                               photo3)
+            return json_response({"restaurants": yelp_ids})
         restaurant_data_list.append(data)
     return json_response({"restaurants": restaurant_data_list})
 
