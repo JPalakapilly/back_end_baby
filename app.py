@@ -70,7 +70,7 @@ def login():
     payload["user_id"] = userID
 
     #expect dictionary as response from getRestaurantVotes
-    restaurant_votes = service.getVotedRestaurants(event_id, userID)
+    restaurant_votes = service.getVotedRestaurants(userID, event_id)
     payload["restaurant_votes"] = restaurant_votes
     return json_response(payload)
 
