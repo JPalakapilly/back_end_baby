@@ -93,5 +93,6 @@ def event_info():
 def json_response(payload, status=200):
  return (json.dumps(payload), status, {'content-type': 'application/json'})
 
-port = int(os.environ.get('PORT', 5002))
-app.run(threaded=False, port=port)
+if __name__ == "__main__":
+    port = int(os.environ.get('PORT', 5002))
+    app.run(threaded=False, port=port)
