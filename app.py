@@ -90,7 +90,7 @@ def vote_restaurant():
     eventID = request_data["eventID"]
     YelpID = request_data["YelpID"]
     userID = request_data["userID"]
-    service.voteRestaurant(userID, yelpID, eventID)
+    service.voteRestaurant(userID, YelpID, eventID)
     return json_response({})
 
 @app.route("/get_restaurants", methods=["GET"])
