@@ -43,7 +43,7 @@ def restaurant_search():
             if len(photos) > 1:
                 photo2 = photos[1]
             if len(photos) > 2:
-                photo2 = photos[2]
+                photo3 = photos[2]
 
             service.addCached(yelp_id,
                               data["name"],
