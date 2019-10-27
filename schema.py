@@ -15,7 +15,7 @@ class UserSchema(Schema):
 class RestaurantOptionSchema(Schema):
     id = fields.Int(required=True)
     event = fields.Nested(EventSchema)
-    yelpID = fields.Str()
+    yelp_id = fields.Str()
 
 class RestaurantVoteSchema(Schema):
     id = fields.Int(required=True)
@@ -35,7 +35,7 @@ class TimeVoteSchema(Schema):
 
 #sqlalchemy stuff
 
-from sqlalchemy import Column, Integer, BigInteger, ForeignKey, String, Boolean, DateTime, types
+from sqlalchemy import Column, Integer, Float, ForeignKey, String, Boolean, DateTime, types
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy.orm import sessionmaker
@@ -90,6 +90,27 @@ class TimeVote(Base):
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('users.id'))
     option_id = Column(Integer, ForeignKey('time_options.id'))
+
+class CachedYelp(Base):
+    __tablename__ = 'cached_yelps'
+    id = Column(Integer, primary_key=True)
+    yelp_id = Column(String, ForeignKey('restaurant_options.yelp_id'))
+    name = Column(String)
+    rating = Column(Float)
+    price = Column(String)
+    phone = Column(String)
+    city = Column(String)
+    image_url = Column(String)
+    photo1 = Column(String)
+    photo2 = Column(String)
+    photo3 = Column(String)
+
+class CachedCategory(Base):
+    __tablename__ = 'cached_categories'
+    id = Column(Integer, primary_key=True)
+    yelp_id = Column(String, ForeignKey('restaurant_options.yelp_id'))
+    category = Column(String)
+
 
 # Create an engine to communicate with the database. The
 # "cockroachdb://" prefix for the engine URL indicates that we are
