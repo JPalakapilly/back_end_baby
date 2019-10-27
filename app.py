@@ -31,6 +31,7 @@ def restaurant_search():
         cached_data = service.getCached(yelp_id)
         if cached_data is not None:
             data = cached_data
+            data["price"] = len(data["price"])
         else:
             data = yelp.restaurant_data_from_ID(yelp_id)
             photos = data["photos"]
@@ -47,7 +48,7 @@ def restaurant_search():
             service.addCached(yelp_id,
                               data["name"],
                               data["rating"],
-                              data["price"],
+                              "$" * data["price"],
                               data["phone"],
                               data["categories"],
                               data["city"],
@@ -101,6 +102,7 @@ def get_restaurants():
         cached_data = service.getCached(yelp_id)
         if cached_data is not None:
             data = cached_data
+            data["price"] = len(data["price"])
         else:
             data = yelp.restaurant_data_from_ID(yelp_id)
             photos = data["photos"]
@@ -117,7 +119,7 @@ def get_restaurants():
             service.addCached(yelp_id,
                               data["name"],
                               data["rating"],
-                              data["price"],
+                              "$" * data["price"],
                               data["phone"],
                               data["categories"],
                               data["city"],
