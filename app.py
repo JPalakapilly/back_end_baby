@@ -92,4 +92,4 @@ def json_response(payload, status=200):
  return (json.dumps(payload), status, {'content-type': 'application/json'})
 
 port = int(os.environ.get('PORT', 4343))
-app.run(threaded=True, port=port)
+app.run(host=0.0.0.0, port=port)
